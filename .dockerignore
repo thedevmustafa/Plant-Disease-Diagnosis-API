@@ -1,0 +1,20 @@
+# Python Bytecode
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Environments
+.venv/
+venv/
+env/
+
+# Source Control
+.git/
+.gitignore
+
+# Database Project Files (Keep the .db, ignore the project settings)
+*.sqbpro
+
+# OS Junk
+.DS_Store
