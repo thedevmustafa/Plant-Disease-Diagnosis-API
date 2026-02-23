@@ -1,3 +1,14 @@
+---
+title: Plant Pathology API
+emoji: 🌿
+colorFrom: green
+colorTo: blue
+sdk: docker
+pinned: false
+app_port: 7860
+startup_duration_timeout: 1h
+---
+
 # 🌿 Plant Disease Diagnosis Microservice
 
 An AI-powered pathology detection engine designed to identify plant diseases from leaf imagery. This microservice uses a Deep Learning model (MobileNetV2) and provides actionable treatment protocols via an integrated SQLite database.

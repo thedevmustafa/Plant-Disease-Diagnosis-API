@@ -9,7 +9,6 @@ from fastapi.staticfiles import StaticFiles
 from torchvision import models, transforms
 from PIL import Image
 import io
-import os
 from constants import CLASS_NAMES
 
 # Load environment variables from .env file
@@ -37,18 +36,17 @@ model.classifier[1] = torch.nn.Sequential(
     torch.nn.Linear(model.last_channel, len(CLASS_NAMES))
 )
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model_assets", "mobilenetv2_plant.pth")
 
-# Daksh159/plant-disease-mobilenetv2
-
-MODEL_PATH = os.path.join(BASE_DIR, "model_assets/mobilenetv2_plant.pth")
 if os.path.exists(MODEL_PATH):
     try:
         model.load_state_dict(torch.load(MODEL_PATH, map_location=device))
         model.eval()
+        print("Model weights loaded successfully.")
     except Exception as e:
         print(f"Error loading model weights: {e}")
 else:
-    print(f"Warning: Model file not found at {MODEL_PATH}")
+    print(f"Warning: Model file not found at {MODEL_PATH}. Predictions will fail.")
 
 # --- PREPROCESSING ---
 transform = transforms.Compose([
