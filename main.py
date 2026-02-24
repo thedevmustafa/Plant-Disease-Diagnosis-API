@@ -4,8 +4,7 @@ import torch
 import os
 from dotenv import load_dotenv
 from fastapi import FastAPI, UploadFile, File, HTTPException, Header, Depends
-from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
+from fastapi.responses import JSONResponse, RedirectResponse
 from torchvision import models, transforms
 from PIL import Image
 import io
@@ -18,9 +17,6 @@ load_dotenv()
 API_SECURITY_KEY = os.getenv("API_SECURITY_KEY", "default-dev-key")
 
 app = FastAPI(title="Plant Disease Diagnosis API", version="1.0.0")
-
-# Serve the static files directory containing index.html
-app.mount("/static", StaticFiles(directory=os.path.join(os.path.dirname(os.path.abspath(__file__)), "static")), name="static")
 
 # Security Dependency definition
 async def verify_api_key(x_api_key: str = Header(...)):
@@ -88,9 +84,9 @@ def get_diagnosis_details(class_name: str) -> dict:
             "error": "Failed to retrieve diagnosis details from the database."
         }
 
-@app.get("/")
+@app.get("/", include_in_schema=False)
 async def root():
-    return {"message": "Headless API running. Use the /static/index.html interface for testing."}
+    return RedirectResponse(url="/docs")
 
 @app.post("/v1/predict")
 async def predict(file: UploadFile = File(...), api_key: str = Depends(verify_api_key)):
